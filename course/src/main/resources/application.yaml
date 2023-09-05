@@ -11,7 +11,7 @@ spring:
   application:
     name: ead-course-service
   datasource:
-    url: jdbc:mysql://localhost:3306/ead_course
+    url: jdbc:mysql://localhost:3306/ead_course_v2
     user: root
     password: Encrypt@Root
   jpa:

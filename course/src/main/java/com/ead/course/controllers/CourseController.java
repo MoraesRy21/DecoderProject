@@ -38,14 +38,7 @@ public class CourseController {
     public ResponseEntity<Page<CourseModel>> getAllCourses(CourseSpecification spec,
                 @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
                 @RequestParam(required = false) UUID userId) {
-        Page<CourseModel> courseModel;
-        if(userId != null) {
-            Specification<CourseModel> specification = CourseSpecification.courseUserId(userId);
-            courseModel = courseService.findAll(specification.and(spec), pageable);
-        } else {
-            courseModel = courseService.findAll(spec, pageable);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(courseModel);
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
     }
 
     @GetMapping("/{courseId}")

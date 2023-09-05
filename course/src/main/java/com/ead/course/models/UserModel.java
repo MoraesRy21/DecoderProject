@@ -1,6 +1,7 @@
-package com.ead.authuser.model;
+package com.ead.course.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,19 +14,14 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users_course", schema = "ead_authuser")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserCourseModel implements Serializable {
+@Table(name = "user", schema = "ead_course")
+public class UserModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID userId;
 
-    @Column(nullable = false)
-    private UUID courseId;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private UserModel user;
 }
