@@ -15,7 +15,7 @@ import java.util.UUID;
 @Data
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "module", schema = "ead_course")
+@Table(name = "module", schema = "ead_course_v2")
 public class ModuleModel {
 
     private static final long serialVersionUID = 1L;

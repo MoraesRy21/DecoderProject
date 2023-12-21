@@ -1,15 +1,11 @@
 package com.ead.authuser.specification;
 
-import com.ead.authuser.model.UserCourseModel;
 import com.ead.authuser.model.UserModel;
-import jakarta.persistence.criteria.Join;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.UUID;
 
 @And({
         @Spec(path = "userType", spec = Equal.class),
@@ -19,11 +15,11 @@ import java.util.UUID;
 })
 public interface UserSpecification extends Specification<UserModel> {
 
-    static Specification<UserModel> userCourseId(final UUID courseID) {
-        return (root, query, criteriaBuilder) ->  { // toPredicate
-            query.distinct(true);
-            Join<UserModel, UserCourseModel> userProd = root.join("usersCourses");
-            return criteriaBuilder.equal(userProd.get("courseId"), courseID);
-        };
-    }
+//    static Specification<UserModel> userCourseId(final UUID courseID) {
+//        return (root, query, criteriaBuilder) ->  { // toPredicate
+//            query.distinct(true);
+//            Join<UserModel, UserCourseModel> userProd = root.join("usersCourses");
+//            return criteriaBuilder.equal(userProd.get("courseId"), courseID);
+//        };
+//    }
 }

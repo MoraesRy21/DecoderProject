@@ -48,65 +48,10 @@ public class AuthenticationController {
         userModel.setUserType(UserType.STUDENT);
         userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userService.save(userModel);
+        userService.saveUser(userModel);
         log.debug("POST: registerUser: userModel saved {} ", userModel.toString());
         log.info("User saved successfully userId {} ", userModel.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
     }
 
-    @PutMapping("/{userId}/user")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "userId") UUID userId,
-                                             @RequestBody @Validated(UserDTO.UserView.UserPut.class)
-                                             @JsonView(UserDTO.UserView.UserPut.class) UserDTO userDTO) {
-        Optional<UserModel> userModelOptional = userService.findById(userId);
-        if(userModelOptional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        var userModel = userModelOptional.get();
-        userModel.setFullName(userDTO.getFullName());
-        userModel.setPhoneNumber(userDTO.getPhoneNumber());
-        userModel.setCpf(userDTO.getCpf());
-        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userService.save(userModel);
-        return ResponseEntity.status(HttpStatus.OK).body(userModel);
-    }
-
-    @PutMapping("/{userId}/password")
-    public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") UUID userId,
-                                             @RequestBody @Validated(UserDTO.UserView.PasswordPut.class)
-                                             @JsonView(UserDTO.UserView.PasswordPut.class) UserDTO userDTO) {
-        Optional<UserModel> userModelOptional = userService.findById(userId);
-        if(userModelOptional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        if(!userModelOptional.get().getPassword().equals(userDTO.getOldPassword()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: Missmacth old password!");
-        var userModel = userModelOptional.get();
-        userModel.setPassword(userDTO.getPassword());
-        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userService.save(userModel);
-        return ResponseEntity.status(HttpStatus.OK).body("Password update successfully");
-    }
-
-    @PutMapping("/{userId}/image")
-    public ResponseEntity<Object> updateImagem(@PathVariable(value = "userId") UUID userId,
-                                                     @RequestBody @Validated(UserDTO.UserView.ImagePut.class)
-                                                     @JsonView(UserDTO.UserView.ImagePut.class) UserDTO userDTO) {
-        Optional<UserModel> userModelOptional = userService.findById(userId);
-        if(userModelOptional.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
-        var userModel = userModelOptional.get();
-        userModel.setImageURL(userDTO.getImageURL());
-        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userService.save(userModel);
-        return ResponseEntity.status(HttpStatus.OK).body("Password update successfully");
-    }
-
-    @GetMapping("/")
-    public String index() {
-        log.trace("TRACE");
-        log.debug("DEBUG");
-        log.info("INFO");
-        log.warn("WARNING");
-        log.error("ERROR");
-        return "Loggin Spring Boot ...";
-    }
 }

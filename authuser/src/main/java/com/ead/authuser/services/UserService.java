@@ -20,9 +20,17 @@ public interface UserService {
 
     void delete(UUID userId);
 
-    void save(UserModel userModel);
+    UserModel save(UserModel userModel);
 
     boolean existByUsername(String username);
 
     boolean existByEmail(String email);
+
+    UserModel saveUser(UserModel userModel);
+
+    void deleteUser(UserModel userModel);
+
+    UserModel updateUser(UserModel userModel);
+
+    UserModel updatePassword(UserModel userModel);
 }

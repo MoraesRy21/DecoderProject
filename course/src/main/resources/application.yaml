@@ -10,6 +10,13 @@ server:
 spring:
   application:
     name: ead-course-service
+  config:
+    import: 'optional:configserver:'
+    #import: 'configserver:'
+  cloud:
+    config:
+      discovery:
+        service-id: ead-config-server
   datasource:
     url: jdbc:mysql://localhost:3306/ead_course_v2
     user: root
@@ -27,6 +34,8 @@ spring:
   output:
     ansi:
       enabled: always
+  rabbitmq:
+    addresses: amqps://fgmtzjgo:RIIdoolieTsCgIL9QoqPNjZ8c6QSmWzj@shrimp.rmq.cloudamqp.com/fgmtzjgo
 
 logging:
   level:
@@ -35,10 +44,28 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate: INFO
 
+authuser:
+  refreshscope:
+    name: Iarley Moraes
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - refresh
+          - health
+
 ead:
   api:
     url:
       authuser: 'http://ead-authuser-service/ead-authuser'
+  broker:
+    exchange:
+      userEventExchange: ead.userevent
+    queue:
+      userEventQueue:
+        name: ead.userevent.ms.course
 
 eureka:
   instance:

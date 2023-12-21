@@ -1,5 +1,6 @@
 package com.ead.authuser.model;
 
+import com.ead.authuser.dtos.UserEventDTO;
 import com.ead.authuser.model.enums.UserStatus;
 import com.ead.authuser.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "users", schema = "ead_authuser")
+@Table(name = "users", schema = "ead_authuser_v2")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserModel extends RepresentationModel<UserModel> implements Serializable {
 
@@ -58,11 +60,11 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime lastUpdateDate;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<UserCourseModel> usersCourses;
-
-    public UserCourseModel convertToUserCourseModel(UUID courseId) {
-        return new UserCourseModel(null, courseId, this);
+    public UserEventDTO convertToUserEventDTO() {
+        var userEventDTO = new UserEventDTO();
+        BeanUtils.copyProperties(this, userEventDTO);
+        userEventDTO.setUserStatus(this.getUserStatus().toString());
+        userEventDTO.setUserType(this.getUserType().toString());
+        return userEventDTO;
     }
 }

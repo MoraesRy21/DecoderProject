@@ -18,7 +18,7 @@ import java.util.UUID;
 @Data
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "course", schema = "ead_course")
+@Table(name = "course", schema = "ead_course_v2")
 public class CourseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,6 +57,9 @@ public class CourseModel implements Serializable {
     private Set<ModuleModel> modules;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    private Set<UserModel> coursesUsers;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "courses_users",
+                joinColumns = @JoinColumn(name = "course_id"),
+                inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserModel> users;
 }

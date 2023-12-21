@@ -1,0 +1,22 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: ead-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/MoraesRy21/ead-config-server-repo
+          default-label: main
+          username: MoraesRy21
+          password: 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
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka/'

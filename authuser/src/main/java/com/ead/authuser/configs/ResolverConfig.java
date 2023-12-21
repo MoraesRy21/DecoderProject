@@ -10,6 +10,7 @@ import java.util.List;
 
 @Configuration
 public class ResolverConfig extends WebMvcConfigurationSupport {
+
     @Override
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new SpecificationArgumentResolver()); // Para conseguir lhe dar com os parâmentros para os filtros

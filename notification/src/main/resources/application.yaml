@@ -4,10 +4,21 @@ application:
 
 server:
   port: 8085
+  servlet:
+    context-path: '/ead-notification/'
 
 spring:
+  application:
+    name: ead-notification-service
+  config:
+    import: 'optional:configserver:'
+    #import: 'configserver:'
+  cloud:
+    config:
+      discovery:
+        service-id: ead-config-server
   datasource:
-    url: jdbc:mysql://localhost:3306/ead_notification
+    url: jdbc:mysql://localhost:3306/ead_notification_v2
     user: root
     password: Encrypt@Root
   jpa:
@@ -20,3 +31,46 @@ spring:
     properties:
       hibernate:
         show_sql: true
+  output:
+    ansi:
+      enabled: always
+  rabbitmq:
+    addresses: amqps://fgmtzjgo:RIIdoolieTsCgIL9QoqPNjZ8c6QSmWzj@shrimp.rmq.cloudamqp.com/fgmtzjgo
+
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
+
+ead:
+  broker:
+    exchange:
+      notificationCommandExchange: ead.notificationcommand
+    queue:
+      notificationCommandQueue:
+        name: ead.notificationcommand.ms.notification
+    key:
+      notificationCommandKey: ms.notification
+
+notification:
+  refreshscope:
+    name: Iarley Moraes
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - refresh
+          - health
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka/'

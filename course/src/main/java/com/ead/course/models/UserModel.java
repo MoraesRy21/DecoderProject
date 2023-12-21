@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "user", schema = "ead_course")
+@Table(name = "user", schema = "ead_course_v2")
 public class UserModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,5 +24,20 @@ public class UserModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID userId;
+    @Column(nullable = false, unique = true, length = 50)
+    private String email;
+    @Column(nullable = false, length = 150)
+    private String fullName;
+    @Column(nullable=false)
+    private String userStatus;
+    @Column(nullable=false)
+    private String userType;
+    @Column(length = 20)
+    private String cpf;
+    @Column
+    private String imageUrl;
 
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Set<CourseModel> course;
 }
